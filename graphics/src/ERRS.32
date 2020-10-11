@@ -1,0 +1,24 @@
+Error wdrvtype.c 41: Undefined structure 'REGS' in function IsDriveValid
+Warning wdrvtype.c 57: Call to function 'intdos' with no prototype in function IsDriveFixed
+
+Error winexec.c 329: Undefined structure 'REGS' in function WinExec
+Warning winexec.c 409: Call to function 'int86' with no prototype in function WinExec
+
+Error winkbd.c 162: Undefined structure 'REGS' in function KBDRead
+
+Error winmouse.c 21: Undefined structure 'REGS' in function MOUSECALL
+Error winmouse.c 51: Undefined structure 'SREGS' in function MOUSE_Init
+Warning winmouse.c 89: Call to function 'intdosx' with no prototype in function MOUSE_Init
+
+Warning winsound.c 112: Call to function 'outp' with no prototype in function SoundTone
+Warning winsound.c 124: Call to function 'inp' with no prototype in function SoundTone
+
+Error winvid.c 140: Undefined structure 'REGS' in function VidSetVideoMode
+
+Error wcomfile.c 133: Undefined structure 'REGS' in function ChangeDriveAndDir
+
+Error wgdipal.c 44: Undefined structure 'REGS' in function InitPaletteManager
+Warning wgdipal.c 87: Call to function 'FP_OFF' with no prototype in function InitPaletteManager
+Warning wgdipal.c 88: Call to function 'int86x' with no prototype in function InitPaletteManager
+Warning wgdipal.c 111: Undefined structure 'SREGS' in function InitPaletteManager
+Warning wgdipal.c 668: Call to function 'outp' with no prototype in function EngineSetPalette

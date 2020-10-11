@@ -1,0 +1,54 @@
+############################################################################
+#                                                                          #
+#  MAKEFILE for the ME macro compiler,                                     #
+#                                                                          #
+############################################################################
+
+APP = rc
+
+# Compiler is M for Microsoft, T for Borland Turbo C
+COMPILER = M
+# Model is M for Medium, L for Large, S for Small
+MODEL = L
+
+# Microsoft C macros
+CC = cc
+DEBUG = -Od -DYYDEBUG=1
+OPT = -Oait -Gs
+CFLAGS = -c -DUNIX -Me -J -DMSC -Zp $(DEBUG) -DRC_TRANS -DXSIGHT
+LINK = link
+LFLAGS = 
+
+OBJS=rc.o idefine.o intlex.o intsym.o y.tab.o yyerror.o rcstring.o itrans.o
+
+.y.c :
+	yacc -ld $*.y
+
+.c.o :
+	$(CC) $(CFLAGS) $*.c
+
+
+all : $(APP)
+
+$(APP): $(OBJS)
+	cc -d -Zi -o $(APP) $(OBJS) 
+
+y.tab.c:      rc.y
+
+idefine.o:    idefine.c
+
+intlex.o:     intlex.c
+
+rc.o:         rc.c
+
+rcstring.o:   rcstring.c
+
+intsym.o:     intsym.c
+
+y.tab.o:      y.tab.c
+
+yyerror.o:    yyerror.c
+
+itrans.o:     itrans.c
+
+

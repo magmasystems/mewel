@@ -1,0 +1,61 @@
+/*
+  Dialog control IDs
+*/
+#define COMMFILE_EDIT       1152
+#define COMMFILE_FILES      1120
+#define COMMFILE_FILTERS    1136
+#define COMMFILE_PATH       1088
+#define COMMFILE_DIRS       1121
+#define COMMFILE_DRIVES     1137
+#define COMMFILE_READONLY   1140
+
+#ifndef IDHELP
+#define IDHELP            8
+#endif
+
+CommFileDlg DIALOG  16,16,276,160
+  STYLE WS_BORDER | WS_CAPTION | WS_SYSMENU
+  CAPTION "Open"
+BEGIN
+  LTEXT            "File &Name:",       -1,                   4, 8,44, 8,
+     WS_CHILD | WS_GROUP 
+  EDITTEXT                              COMMFILE_EDIT,        4, 16,80, 12,
+     WS_BORDER | WS_CHILD | WS_TABSTOP | ES_AUTOHSCROLL | ES_LOWERCASE
+  LISTBOX                               COMMFILE_FILES,       4,24,84,64,
+     WS_BORDER | WS_CHILD | WS_VSCROLL | WS_TABSTOP | WS_GROUP | LBS_NOTIFY | LBS_SORT
+//             | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS
+
+  LTEXT            "List Files of &Type:",
+                                        -1,                   4,104,80, 8,
+     WS_CHILD | WS_GROUP 
+  COMBOBOX                              COMMFILE_FILTERS,     4,112,76,48,
+     WS_CHILD | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_AUTOHSCROLL
+
+
+  LTEXT            "&Directories:",     -1,                 108, 8,52, 8,
+     WS_CHILD | WS_GROUP 
+  LTEXT             "",                  COMMFILE_PATH,      108,16,128, 8,
+     WS_CHILD | WS_GROUP 
+  LISTBOX                               COMMFILE_DIRS,      108,24,84,64,
+     WS_BORDER | WS_CHILD | WS_VSCROLL | WS_TABSTOP | WS_GROUP | LBS_NOTIFY | LBS_SORT
+               | LBS_WANTKEYBOARDINPUT
+//              | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS
+
+  LTEXT             "Dri&ves:",          -1,                 108,104,32, 8,
+     WS_CHILD | WS_GROUP 
+  COMBOBOX                              COMMFILE_DRIVES,    108,112,40,48,
+     WS_CHILD | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_AUTOHSCROLL | CBS_SORT
+
+  PUSHBUTTON       "&OK",               IDOK,               212,24,40,24,
+     WS_BORDER | WS_CHILD | WS_TABSTOP | WS_GROUP | BS_DEFPUSHBUTTON
+  PUSHBUTTON       "&Cancel",           IDCANCEL,           212,48,40,24,
+     WS_BORDER | WS_CHILD | WS_TABSTOP | WS_GROUP
+  PUSHBUTTON       "&Help",             IDHELP,             212,80,40,24,
+     WS_BORDER | WS_CHILD | WS_TABSTOP | WS_GROUP
+
+  CHECKBOX         "&Read Only",        COMMFILE_READONLY,  212,112,56, 8,
+     WS_CHILD | WS_TABSTOP | WS_GROUP
+//   | WS_DISABLED
+
+END
+

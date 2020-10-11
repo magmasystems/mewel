@@ -1,0 +1,12 @@
+-g
+-c
+-fsoft
+-Hnocopyr
+-Hipname=INCLUDE
+-Hpragma=Offwarn(533)
+-Hpragma=Offwarn(553)
+-DPASCAL=
+-DCDECL=
+-DDOS
+-Hpragma=on(CodeView)
+

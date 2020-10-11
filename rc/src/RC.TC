@@ -1,0 +1,122 @@
+.AUTODEPEND
+
+#		*Translator Definitions*
+CC = bcc +RC.CFG
+TASM = TASM
+TLIB = tlib
+TLINK = tlink
+LIBPATH = c:\BC4\LIB
+INCLUDEPATH = c:\BC4\INCLUDE
+
+
+#		*Implicit Rules*
+.c.obj:
+  $(CC) -c {$< }
+
+.cpp.obj:
+  $(CC) -c {$< }
+
+#		*List Macros*
+
+
+EXE_dependencies =  \
+ idefine.obj \
+ intlex.obj \
+ intsym.obj \
+ rc.obj \
+ rcstring.obj \
+ ytab.obj \
+ yyerror.obj \
+ rccoord.obj \
+ rcmenu.obj
+
+#		*Explicit Rules*
+rc.exe: rc.cfg $(EXE_dependencies)
+  $(TLINK) /v/x/c/P-/L$(LIBPATH) @&&|
+c0l.obj+
+idefine.obj+
+intlex.obj+
+intsym.obj+
+rc.obj+
+rcstring.obj+
+ytab.obj+
+yyerror.obj+
+rccoord.obj+
+rcmenu.obj
+rc
+		# no map file
+emu.lib+
+mathl.lib+
+cl.lib
+|
+
+
+#		*Individual File Dependencies*
+idefine.obj: rc.cfg idefine.c 
+
+intlex.obj: rc.cfg intlex.c 
+
+intsym.obj: rc.cfg intsym.c 
+
+rc.obj: rc.cfg rc.c 
+
+rcstring.obj: rc.cfg rcstring.c 
+
+ytab.obj: rc.cfg ytab.c 
+
+yyerror.obj: rc.cfg yyerror.c 
+
+#		*Compiler Configuration File*
+rc.cfg: rc.tc
+  copy &&|
+-ml
+-K
+-G
+-O
+-Og
+-Oe
+-Om
+-Ov
+-Ol
+-Ob
+-Op
+-Oi
+-Z
+-k-
+-d
+-v
+-vi
+-H=RC.SYM
+-w-ret
+-w-nci
+-w-inl
+-wpin
+-wamb
+-wamp
+-w-par
+-wasm
+-wcln
+-w-cpt
+-wdef
+-w-dup
+-w-pia
+-w-pin
+-w-rvl
+-wsig
+-wnod
+-w-aus
+-w-ill
+-w-sus
+-wstv
+-wucp
+-wuse
+-w-ext
+-w-ias
+-w-ibc
+-w-pre
+-w-nst
+-I$(INCLUDEPATH)
+-L$(LIBPATH)
+| rc.cfg
+
+

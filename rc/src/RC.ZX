@@ -1,0 +1,74 @@
+############################################################################
+#                                                                          #
+#  MAKEFILE for the MEWEL resourcecompiler,                                #
+#                                                                          #
+#  This is for the Zortech DOSX extender                                   #
+#                                                                          #
+############################################################################
+
+# Compiler is M for Microsoft, T for Borland Turbo C
+COMPILER = Z
+# Model is M for Medium, L for Large, S for Small
+MODEL = x
+
+# ZORTECH C macros
+CC = ztc
+OPT = -o
+DEBUG = -s -S -L -r -o-all -g -DYYDEBUG=1
+# -br  use 16-bit protected mode executables
+# -c   no linking
+# -Jm  relax type checking
+# -Ju  unsigned chars
+# -ml  large memory model
+# DEBUGGING
+# -g   debugging info, symbols only
+# -co  use Codeview
+# -L   use Microsoft linker (LINK)
+# -r   strict prototyping
+# -S   generate a stack frame
+# -s   stack overflow checking
+# OPTIMIZATION
+# -o   global optimizer
+CFLAGS = -bx -c -Ju -Jm -m$(MODEL) -DMSC -DDOS -DZORTECH $(DEBUG)
+ASM = masm 
+##LMODEL should be 1 if you want large data
+ASMDEBUG = /Zi
+ASMFLAGS = /DLMODEL=1 /DTC=0 /mx $(ASMDEBUG) /DMODL=large
+LIB = zorlib
+LINK = blink
+LFLAGS = /st:8192
+
+OBJS=rc.obj idefine.obj intlex.obj intsym.obj ytab.obj yyerror.obj rcstring.obj \
+rccoord.obj
+
+.c.obj :
+	$(CC) $(CFLAGS) $*.c
+
+.y.c   :
+  yacc -ld $*.y
+
+all : rcx.exe
+
+ytab.c:         rc.y
+
+idefine.obj:    idefine.c
+
+intlex.obj:     intlex.c
+
+rc.obj:         rc.c
+
+rcstring.obj:   rcstring.c
+
+intsym.obj:     intsym.c
+
+ytab.obj:       ytab.c
+
+yyerror.obj:    yyerror.c
+
+rccoord.obj:    rccoord.c
+
+
+rcx.exe:  $(OBJS)
+  $(LINK) $(LFLAGS) cx+$**,rcx.exe,nul,x32
+
+

@@ -1,0 +1,106 @@
+############################################################################
+#                                                                          #
+#  MAKEFILE for the MEWEL Rsource Compiler                                 #
+#                                                                          #
+#  Microsoft C version.                                                    #
+#                                                                          #
+#  nmk -f rc [D=1] [PL=1]                                                  #
+#     if D is defined, then a debugging version will be built.             #
+#     if PL is defined, a version for Pharlap 286 will be built.           #
+#                                                                          #
+############################################################################
+
+# Compiler is M for Microsoft, T for Borland Turbo C
+COMPILER = M
+# Model is M for Medium, L for Large, S for Small
+!ifndef TNT
+MODEL = /AL
+!endif
+
+# Microsoft C macros
+CC = cl
+!ifdef D
+DEBUG = /Zi /Od /DYYDEBUG=1
+!else
+OPT = /Oit /Gs
+!endif
+
+CFLAGS = /c $(MODEL) /J /DMSC /Zp $(OPT) $(DEBUG)
+
+#
+# For Pharlap, throw the /Lp switch
+#
+!ifdef PL
+CFLAGS=$(CFLAGS) /Lp
+!endif
+
+
+LINK = link
+!ifdef TNT
+LINK = 386link
+!ifdef D
+LFLAGS = /co
+!else
+LFLAGS =
+!endif
+
+!else
+!ifdef D
+LFLAGS = /co /st:10000
+!else
+LFLAGS = /st:10000 
+!endif
+!endif
+
+
+OBJS=rc.obj idefine.obj intlex.obj intsym.obj ytab.obj yyerror.obj rcstring.obj \
+rccoord.obj rcmenu.obj
+OBJ=rc idefine intlex intsym ytab yyerror rcstring rccoord rcmenu
+
+.c.obj :
+	$(CC) $(CFLAGS) $*.c
+
+.y.c   :
+  yacc -ld $*.y
+
+
+!ifdef TNT
+all : rctnt.exe
+!else
+all : rc.exe
+!endif
+
+ytab.c:         rc.y
+
+idefine.obj:    idefine.c
+
+intlex.obj:     intlex.c int.h rccomp.h
+
+rc.obj:         rc.c
+
+rcstring.obj:   rcstring.c
+
+intsym.obj:     intsym.c
+
+ytab.obj:       ytab.c
+
+yyerror.obj:    yyerror.c
+
+rccoord.obj:    rccoord.c
+
+rcmenu.obj:     rcmenu.c
+
+
+!ifdef TNT
+rctnt.exe:  $(OBJS)
+  $(LINK) $** -exe rctnt @msvc32.dos
+!else
+!ifdef PL
+rc286.exe:  $(OBJS)
+  $(LINK) $(LFLAGS) /noe $**,rc286,nul,/nod:llibce llibcep llibpe phapi,protmode.def
+!else
+rc.exe:  $(OBJS)
+  $(LINK) $(LFLAGS) $**,rc.exe;
+!endif
+!endif
+

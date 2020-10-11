@@ -1,0 +1,53 @@
+SHELL	= /bin/sh
+BIN_DIR	= ../bin
+
+CC	= cc -Qpath $(BIN_DIR)
+#CC	= gcc -Wall -fwritable-strings
+
+CFLAGS	= -Dfar= -Dcdecl= -Dpascal= -DUNIX -g -DWZV -DWORD_ALIGNED 
+YFLAGS	= -d
+
+.SUFFIXES: 
+
+.SUFFIXES: .c .o
+
+.c.o:
+	$(CC) $(CFLAGS) -c $*.c
+
+RCOBJS	= rc.o idefine.o intlex.o intsym.o ytab.o yyerror.o rcstring.o iopt.o
+DMPOBJS	= rcdump.o rcname.o
+
+all:	rc rcdump
+
+rc:	$(RCOBJS)
+	$(CC) $(CFLAGS) -o $@ $(RCOBJS) 
+
+rcdump:	$(DMPOBJS)
+	$(CC) $(CFLAGS) -o $@ $(DMPOBJS)
+
+install: all
+	cp rc rcdump $(BIN_DIR)
+
+rcname.c: rc_name.sh rccomp.h
+	sh rc_name.sh < rccomp.h >rcname.c
+
+ytab.c:	rc.y
+	$(YACC) $(YFLAGS) $?
+	sed 's/^extern *char *\*malloc.*//' y.tab.c >ytab.c
+	rm y.tab.c
+	mv y.tab.h ytab.h
+
+clean:
+	rm -f core mon.out rc rcdump *.o rcname.c
+
+idefine.o : idefine.c int.h ytab.h 
+intlex.o : intlex.c int.h rccomp.h ytab.h 
+intsym.o : intsym.c int.h ytab.h 
+rc.o : rc.c int.h rccomp.h ytab.h 
+rcdump.o : rcdump.c int.h rccomp.h 
+rcname.o : rcname.c 
+rcstring.o : rcstring.c int.h rccomp.h 
+ytab.o : ytab.c int.h rccomp.h style.h 
+ytab.o : ytab.c int.h rccomp.h style.h 
+yyerror.o : yyerror.c ytoken.h 
+

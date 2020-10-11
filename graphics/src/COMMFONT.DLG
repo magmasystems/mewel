@@ -1,0 +1,53 @@
+#define ID_FONTCOMBO    100
+#define ID_STYLECOMBO   101
+#define ID_SIZECOMBO    102
+#define ID_APPLY        103
+#define ID_EFFECTS      104
+#define ID_STRIKEOUT    105
+#define ID_UNDERLINE    106
+#define ID_COLORTEXT    107
+#define ID_COLORCOMBO   108
+#define ID_AABBYYZZ     109
+#define ID_INFO         110
+
+ChooseFontDlg DIALOG 13, 54, 264, 147
+  STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+  CAPTION "Font"
+  FONT 8, "Helv"
+BEGIN
+    LTEXT           "&Font:", -1, 6, 3, 40, 9
+    COMBOBOX        ID_FONTCOMBO, 6, 13, 94, 54, 
+                    CBS_SIMPLE | CBS_AUTOHSCROLL | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP | CBS_HASSTRINGS | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL
+
+    LTEXT           "Font St&yle:", -1, 108, 3, 44, 9
+    COMBOBOX        ID_STYLECOMBO, 108, 13, 64, 54, 
+                    CBS_SIMPLE | WS_VSCROLL | CBS_DISABLENOSCROLL | WS_TABSTOP
+
+    LTEXT           "&Size:", -1, 179, 3, 30, 9
+    COMBOBOX        ID_SIZECOMBO, 179, 13, 32, 54, 
+                    CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP | CBS_HASSTRINGS | 
+                    CBS_OWNERDRAWFIXED | CBS_DISABLENOSCROLL
+
+    DEFPUSHBUTTON   "OK",     IDOK,     218,  6, 40, 14, WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "Cancel", IDCANCEL, 218, 23, 40, 14, WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "&Apply", ID_APPLY, 218, 40, 40, 14, WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "&Help",  IDHELP,   218, 57, 40, 14, WS_GROUP | WS_TABSTOP
+
+    GROUPBOX        "Effects", ID_EFFECTS, 6, 72, 84, 34, WS_GROUP
+    CONTROL         "Stri&keout", ID_STRIKEOUT, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 10, 82, 49, 10
+    CONTROL         "&Underline", ID_UNDERLINE, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 10, 94, 51, 10
+
+    LTEXT           "&Color:", ID_COLORTEXT, 6, 110, 30, 9
+    COMBOBOX        ID_COLORCOMBO, 6, 120, 84, 100, 
+                    CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_AUTOHSCROLL | 
+                    CBS_HASSTRINGS | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+
+    GROUPBOX        "Sample", -1, 98, 72, 160, 49, WS_GROUP
+    CTEXT           "", ID_INFO, 98, 124, 160, 20,  SS_NOPREFIX | NOT WS_GROUP
+    CTEXT           "AaBbYyZz", ID_AABBYYZZ, 104, 81, 149, 37, SS_NOPREFIX | NOT WS_VISIBLE
+END
+

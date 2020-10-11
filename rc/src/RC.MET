@@ -1,0 +1,64 @@
+############################################################################
+#                                                                          #
+#  MAKEFILE for the MEWEL resourcecompiler,                                #
+#                                                                          #
+#  This is for the MetaWare/386 compiler with the PharLap 386 Extender     #
+#                                                                          #
+############################################################################
+
+# Compiler is M for Microsoft, T for Borland Turbo C
+COMPILER = H
+# Model is M for Medium, L for Large, S for Small
+MODEL = f
+
+CC = hc386
+OPT = 
+CFLAGS = -mf -zq -3r -DMSC -DDOS $(DEBUG) $(OPT)
+CFLAGS = @highc.opt
+
+OBJS=rc.obj idefine.obj intlex.obj intsym.obj ytab.obj yyerror.obj rcstring.obj \
+rccoord.obj rcmenu.obj
+
+.c.obj :
+	$(CC) $(CFLAGS) $*.c
+
+all : rc32.exp
+
+
+#ytab.c:         rc.y
+#	yacc -ld rc.y
+
+idefine.obj:    idefine.c
+	$(CC) $(CFLAGS) $*.c
+
+intlex.obj:     intlex.c
+	$(CC) $(CFLAGS) $*.c
+
+intsym.obj:     intsym.c
+	$(CC) $(CFLAGS) $*.c
+
+rc.obj:         rc.c
+	$(CC) $(CFLAGS) $*.c
+
+rccoord.obj:    rccoord.c
+	$(CC) $(CFLAGS) $*.c
+
+rcmenu.obj:     rcmenu.c
+	$(CC) $(CFLAGS) $*.c
+
+rcstring.obj:   rcstring.c
+	$(CC) $(CFLAGS) $*.c
+
+ytab.obj:       ytab.c
+	$(CC) $(CFLAGS) $*.c
+
+yyerror.obj:    yyerror.c
+	$(CC) $(CFLAGS) $*.c
+
+
+rc32.exp:  $(OBJS)
+	del rc32.exe
+	386link @rc.lnk
+	ren rc.exe rc32.exe
+
+

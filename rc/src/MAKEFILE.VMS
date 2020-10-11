@@ -1,0 +1,55 @@
+SHELL	= /bin/sh
+BIN_DIR	= [-.bin]
+LD	= link
+
+.SUFFIXES:
+.SUFFIXES: .c .obj .exe
+
+#CC	= cc -Qpath $(BIN_DIR)
+#CC	= gcc -Wall -fwritable-strings
+
+CFLAGS	= /define=("far=nothing", "cdecl=nothing", "pascal=nothing", \
+	"unlink=delete", VAXC=1, WZV=1, WORD_ALIGNED=1) \
+	/debug /noopt /include=[]
+YFLAGS	= -d
+LDFLAGS	= /nodebug ,[-.lib]vaxc_share/opt
+
+RCOBJS	= rc.obj,idefine.obj,intlex.obj,intsym.obj,ytab.obj,yyerror.obj,rcstring.obj ,\
+	iopt.obj
+DMPOBJS	= rcdump.obj,rcname.obj
+
+all:	rc.exe rcdump.exe
+
+rc.exe:	$(RCOBJS)
+	$(LD) $(RCOBJS) $(LDFLAGS) 
+
+rcdump.exe:	$(DMPOBJS)
+	$(LD) $(DMPOBJS) $(LDFLAGS)
+
+install: all
+	copy rc.exe,rcdump.exe $(BIN_DIR)
+	purge $(BIN_DIR)
+
+# rcname.c: rc_name.sh rccomp.h
+# 	sh rc_name.sh < rccomp.h >rcname.c
+
+# ytab.c:      rc.y
+# 	$(YACC) $(YFLAGS) $?
+#	mv y.tab.c ytab.c
+#	mv y.tab.h ytab.h
+
+clean:
+	delete rc.exe;*, rcdump.exe;*, *.obj;*
+	purge []
+
+idefine.obj : idefine.c int.h ytab.h 
+intlex.obj : intlex.c int.h rccomp.h ytab.h 
+intsym.obj : intsym.c int.h ytab.h 
+rc.obj : rc.c int.h rccomp.h ytab.h 
+rcdump.obj : rcdump.c int.h rccomp.h 
+rcname.obj : rcname.c 
+rcstring.obj : rcstring.c int.h rccomp.h 
+ytab.obj : ytab.c int.h rccomp.h style.h 
+ytab.obj : ytab.c int.h rccomp.h style.h 
+yyerror.obj : yyerror.c ytoken.h 
+

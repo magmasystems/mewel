@@ -1,0 +1,20 @@
+MSC     EQU     1
+
+PROGSEG MACRO
+	name&_TEXT	SEGMENT	WORD PUBLIC 'CODE'
+	ASSUME CS:name&_TEXT
+	ENDM
+
+ENDPS   MACRO
+	name&_TEXT	ENDS
+        ENDM
+
+DATASEGM macro name
+	DGROUP	GROUP	_DATA
+	_DATA	SEGMENT	WORD PUBLIC 'DATA'
+	ASSUME	DS:DGROUP
+	endm
+
+ENDDS	macro name
+	_DATA	ends
+	endm

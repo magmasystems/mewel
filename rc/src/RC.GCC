@@ -1,0 +1,65 @@
+############################################################################
+#                                                                          #
+#  MAKEFILE for the MEWEL Rsource Compiler                                 #
+#                                                                          #
+#  Microsoft C version.                                                    #
+#                                                                          #
+#  nmk -f rc [D=1] [PL=1]                                                  #
+#     if D is defined, then a debugging version will be built.             #
+#     if PL is defined, a version for Pharlap 286 will be built.           #
+#                                                                          #
+############################################################################
+
+CC = gcc
+DEBUG = -g -O0 -DYYDEBUG=1
+#OPT = -O
+
+#
+# Defines
+#   WORD_ALIGN - structures and string should be WORD aligned.
+#
+
+!ifdef DOS
+CFLAGS = -c $(OPT) $(DEBUG) -UUNIX -DWORD_ALIGNED
+!else
+CFLAGS = -c $(OPT) $(DEBUG) -DUNIX -DWORD_ALIGNED
+!endif
+
+OBJS=rc.o idefine.o intlex.o intsym.o ytab.o yyerror.o rcstring.o rccoord.o rcmenu.o
+
+.c.o :
+	$(CC) $(CFLAGS) $*.c
+
+.y.c   :
+	yacc -ld $*.y
+
+
+all : rc.exe
+
+ytab.c:       rc.y
+
+idefine.o:    idefine.c
+
+intlex.o:     intlex.c int.h rccomp.h
+
+intsym.o:     intsym.c
+
+rc.o:         rc.c
+
+rccoord.o:    rccoord.c
+
+rcmenu.o:     rcmenu.c
+
+rcstring.o:   rcstring.c
+
+ytab.o:       ytab.c
+
+yyerror.o:    yyerror.c
+
+
+rc.exe:  $(OBJS)
+	$(CC) -g -o rc $(OBJS)
+!ifdef DOS
+	coff2exe rc
+!endif
+
